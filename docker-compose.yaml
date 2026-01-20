@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: exam-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    volumes:
+      # Named volume สำหรับ logs
+      - backend-logs:/app/logs
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/demo"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: exam-frontend
+    ports:
+      - "3001:3000"
+    environment:
+      # API URL สำหรับ client-side calls
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+    networks:
+      - app-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+# Network สำหรับให้ services สื่อสารกัน
+networks:
+  app-network:
+    driver: bridge
+    name: exam-network
+
+# Named volumes สำหรับข้อมูลที่ต้องการเก็บไว้
+volumes:
+  backend-logs:
+    driver: local
+    name: exam-backend-logs

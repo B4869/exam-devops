@@ -9,10 +9,12 @@ node_modules/
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # ==================== Backend (Node.js/Express) ====================
 # Logs
-backend/logs/*.log
 backend/logs/
 logs/
 *.log
@@ -42,17 +44,20 @@ next-env.d.ts
 coverage/
 *.lcov
 .nyc_output
+.jest-cache/
 
 # ==================== Production ====================
 build/
 dist/
 
 # ==================== Environment Variables ====================
+# Ignore all .env files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+
+# BUT allow .env.example to be committed (for documentation)
+!.env.example
+!.env.template
 
 # ==================== OS ====================
 .DS_Store
@@ -62,6 +67,7 @@ dist/
 .Trashes
 ehthumbs.db
 Thumbs.db
+desktop.ini
 
 # ==================== IDEs ====================
 .vscode/
@@ -72,6 +78,13 @@ Thumbs.db
 .project
 .classpath
 .settings/
+*.sublime-project
+*.sublime-workspace
+
+# ==================== Docker ====================
+# Ignore all docker volumes data
+volumes/
+docker-compose.override.yml
 
 # ==================== Misc ====================
 *.pem
@@ -79,3 +92,6 @@ Thumbs.db
 .cache/
 temp/
 tmp/
+*.bak
+*.backup
+*.old

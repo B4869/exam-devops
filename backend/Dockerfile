@@ -13,6 +13,6 @@ COPY --from=builder /app /app
 RUN mkdir -p logs
 # Healthcheck (เพิ่มความซับซ้อน: เช็คว่า server พร้อม)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-CMD wget --quiet --tries=1 --spider http://localhost:3000/api/test || exit 1
+CMD wget --quiet --tries=1 --spider http://localhost:3000/api/demo || exit 1
 EXPOSE 3000
 CMD ["node", "server.js"]
